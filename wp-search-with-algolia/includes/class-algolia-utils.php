@@ -128,9 +128,14 @@ class Algolia_Utils {
 				if ( ! $info ) {
 					continue;
 				}
-
+				
+				$url = str_replace(
+					'http://localhost',
+					'https://mylivesite.com',
+					$info[0]
+				);
 				$images[ $size ] = array(
-					'url'    => $info[0],
+					'url'    => $url,
 					'width'  => $info[1],
 					'height' => $info[2],
 				);

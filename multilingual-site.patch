@@ -1,6 +1,26 @@
-diff -ruN wp-search-with-algolia/includes/indices/class-algolia-posts-index.php wp-search-with-algolia/includes/indices/class-algolia-posts-index.php
---- includes/indices/class-algolia-posts-index.php	2022-05-18 19:18:40.000000000 +0800
-+++ wp-search-with-algolia/includes/indices/class-algolia-posts-index.php	2022-10-29 15:44:13.000000000 +0800
+diff -ruN includes/class-algolia-utils.php wp-search-with-algolia/includes/class-algolia-utils.php
+--- includes/class-algolia-utils.php	2020-10-07 20:07:22.000000000 +0800
++++ wp-search-with-algolia/includes/class-algolia-utils.php	2022-12-14 19:42:45.021490000 +0800
+@@ -128,9 +128,14 @@
+ 				if ( ! $info ) {
+ 					continue;
+ 				}
+-
++				
++				$url = str_replace(
++					'http://localhost',
++					'https://mylivesite.com',
++					$info[0]
++				);
+ 				$images[ $size ] = array(
+-					'url'    => $info[0],
++					'url'    => $url,
+ 					'width'  => $info[1],
+ 					'height' => $info[2],
+ 				);
+diff -ruN includes/indices/class-algolia-posts-index.php wp-search-with-algolia/includes/indices/class-algolia-posts-index.php
+--- includes/indices/class-algolia-posts-index.php	2022-05-18 19:05:20.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-posts-index.php	2022-11-26 00:45:31.038463100 +0800
 @@ -219,7 +219,13 @@
  
  		$shared_attributes['images'] = Algolia_Utils::get_post_images( $post->ID );
@@ -9,7 +29,7 @@ diff -ruN wp-search-with-algolia/includes/indices/class-algolia-posts-index.php 
 +		$permalink = get_permalink( $post );
 +		$permalink = str_replace(
 +			'http://localhost',
-+			'https://craftweeks.com',
++			'https://mylivesite.com',
 +			$permalink
 +	    );
 +        $shared_attributes['permalink']      = $permalink;
@@ -17,8 +37,8 @@ diff -ruN wp-search-with-algolia/includes/indices/class-algolia-posts-index.php 
  
  		// Push all taxonomies by default, including custom ones.
 diff -ruN includes/indices/class-algolia-searchable-posts-index.php wp-search-with-algolia/includes/indices/class-algolia-searchable-posts-index.php
---- includes/indices/class-algolia-searchable-posts-index.php	2022-05-18 19:18:40.000000000 +0800
-+++ wp-search-with-algolia/includes/indices/class-algolia-searchable-posts-index.php	2022-10-29 15:46:36.000000000 +0800
+--- includes/indices/class-algolia-searchable-posts-index.php	2022-05-18 19:05:20.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-searchable-posts-index.php	2022-11-26 00:45:31.056187700 +0800
 @@ -213,7 +213,13 @@
  
  		$shared_attributes['images'] = Algolia_Utils::get_post_images( $post->ID );
@@ -35,8 +55,8 @@ diff -ruN includes/indices/class-algolia-searchable-posts-index.php wp-search-wi
  
  		// Push all taxonomies by default, including custom ones.
 diff -ruN includes/indices/class-algolia-terms-index.php wp-search-with-algolia/includes/indices/class-algolia-terms-index.php
---- includes/indices/class-algolia-terms-index.php	2022-05-18 19:18:40.000000000 +0800
-+++ wp-search-with-algolia/includes/indices/class-algolia-terms-index.php	2022-10-29 15:49:57.000000000 +0800
+--- includes/indices/class-algolia-terms-index.php	2022-05-18 19:05:20.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-terms-index.php	2022-12-14 17:44:32.274802000 +0800
 @@ -98,9 +98,21 @@
  		$record['slug']        = $item->slug;
  		$record['posts_count'] = (int) $item->count;
@@ -62,21 +82,21 @@ diff -ruN includes/indices/class-algolia-terms-index.php wp-search-with-algolia/
  
  		$record = (array) apply_filters( 'algolia_term_record', $record, $item );
 diff -ruN templates/autocomplete.php wp-search-with-algolia/templates/autocomplete.php
---- templates/autocomplete.php	2021-07-24 01:30:16.000000000 +0800
-+++ wp-search-with-algolia/templates/autocomplete.php	2022-10-29 20:24:23.000000000 +0800
-@@ -129,6 +129,11 @@
+--- templates/autocomplete.php	2022-11-14 14:17:00.000000000 +0800
++++ wp-search-with-algolia/templates/autocomplete.php	2022-11-26 00:45:31.089648800 +0800
+@@ -108,6 +108,11 @@
  					attributesToSnippet: [
  						'content:10'
  					],
-+					"facetFilters": [
++					facetFilters: [
 +					  [
-+   						"taxonomies.language:<?php echo pll_current_language('name'); ?>"
++   						'taxonomies.language:<?php echo pll_current_language('name'); ?>'
 +					  ]
 +					],
  					highlightPreTag: '__ais-highlight__',
  					highlightPostTag: '__/ais-highlight__'
  				} ),
-@@ -176,6 +181,7 @@
+@@ -154,6 +159,7 @@
  
  			var config = {
  				debug: algolia.debug,
@@ -85,29 +105,9 @@ diff -ruN templates/autocomplete.php wp-search-with-algolia/templates/autocomple
  				openOnFocus: true,
  				appendTo: 'body',
 diff -ruN templates/instantsearch.php wp-search-with-algolia/templates/instantsearch.php
---- templates/instantsearch.php	2021-07-24 01:30:16.000000000 +0800
-+++ wp-search-with-algolia/templates/instantsearch.php	2022-10-29 18:15:33.000000000 +0800
-@@ -30,6 +30,10 @@
- 				<section class="ais-facets" id="facet-post-types"></section>
- 			</div>
- 			<div>
-+				<h3 class="widgettitle"><?php esc_html_e( 'Languages', 'wp-search-with-algolia' ); ?></h3>
-+				<section class="ais-facets" id="facet-languages"></section>
-+			</div>
-+			<div>
- 				<h3 class="widgettitle"><?php esc_html_e( 'Categories', 'wp-search-with-algolia' ); ?></h3>
- 				<section class="ais-facets" id="facet-categories"></section>
- 			</div>
-@@ -38,7 +42,7 @@
- 				<section class="ais-facets" id="facet-tags"></section>
- 			</div>
- 			<div>
--				<h3 class="widgettitle"><?php esc_html_e( 'Users', 'wp-search-with-algolia' ); ?></h3>
-+				<h3 class="widgettitle"><?php esc_html_e( 'Authors', 'wp-search-with-algolia' ); ?></h3>
- 				<section class="ais-facets" id="facet-users"></section>
- 			</div>
- 		</aside>
-@@ -161,6 +165,14 @@
+--- templates/instantsearch.php	2022-10-31 15:55:46.000000000 +0800
++++ wp-search-with-algolia/templates/instantsearch.php	2022-12-14 20:38:01.370232800 +0800
+@@ -160,6 +164,14 @@
  						sortBy: ['isRefined:desc', 'count:desc', 'name:asc'],
  						limit: 10,
  					}),
