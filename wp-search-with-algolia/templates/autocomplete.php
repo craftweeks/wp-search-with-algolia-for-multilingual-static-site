@@ -129,6 +129,11 @@
 					attributesToSnippet: [
 						'content:10'
 					],
+					"facetFilters": [
+					  [
+   						"taxonomies.language:<?php echo pll_current_language('name'); ?>"
+					  ]
+					],
 					highlightPreTag: '__ais-highlight__',
 					highlightPostTag: '__/ais-highlight__'
 				} ),
@@ -176,6 +181,7 @@
 
 			var config = {
 				debug: algolia.debug,
+				detachedMediaQuery: '',
 				hint: false,
 				openOnFocus: true,
 				appendTo: 'body',

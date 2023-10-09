@@ -1,0 +1,124 @@
+diff -ruN wp-search-with-algolia/includes/indices/class-algolia-posts-index.php wp-search-with-algolia/includes/indices/class-algolia-posts-index.php
+--- includes/indices/class-algolia-posts-index.php	2022-05-18 19:18:40.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-posts-index.php	2022-10-29 15:44:13.000000000 +0800
+@@ -219,7 +219,13 @@
+ 
+ 		$shared_attributes['images'] = Algolia_Utils::get_post_images( $post->ID );
+ 
+-		$shared_attributes['permalink']      = get_permalink( $post );
++		$permalink = get_permalink( $post );
++		$permalink = str_replace(
++			'http://localhost',
++			'https://craftweeks.com',
++			$permalink
++	    );
++        $shared_attributes['permalink']      = $permalink;
+ 		$shared_attributes['post_mime_type'] = $post->post_mime_type;
+ 
+ 		// Push all taxonomies by default, including custom ones.
+diff -ruN includes/indices/class-algolia-searchable-posts-index.php wp-search-with-algolia/includes/indices/class-algolia-searchable-posts-index.php
+--- includes/indices/class-algolia-searchable-posts-index.php	2022-05-18 19:18:40.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-searchable-posts-index.php	2022-10-29 15:46:36.000000000 +0800
+@@ -213,7 +213,13 @@
+ 
+ 		$shared_attributes['images'] = Algolia_Utils::get_post_images( $post->ID );
+ 
+-		$shared_attributes['permalink']      = get_permalink( $post );
++		$permalink = get_permalink( $post );
++		$permalink = str_replace(
++			'http://localhost',
++			'https://mylivesite.com',
++			$permalink
++		);
++		$shared_attributes['permalink']      = $permalink;
+ 		$shared_attributes['post_mime_type'] = $post->post_mime_type;
+ 
+ 		// Push all taxonomies by default, including custom ones.
+diff -ruN includes/indices/class-algolia-terms-index.php wp-search-with-algolia/includes/indices/class-algolia-terms-index.php
+--- includes/indices/class-algolia-terms-index.php	2022-05-18 19:18:40.000000000 +0800
++++ wp-search-with-algolia/includes/indices/class-algolia-terms-index.php	2022-10-29 15:49:57.000000000 +0800
+@@ -98,9 +98,21 @@
+ 		$record['slug']        = $item->slug;
+ 		$record['posts_count'] = (int) $item->count;
+ 		if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
+-			$record['permalink'] = wpcom_vip_get_term_link( $item );
++			$permalink = wpcom_vip_get_term_link( $item );
++			$permalink = str_replace(
++				'http://localhost',
++				'https://mylivesite.com',
++				$permalink
++			);
++			$record['permalink'] = $permalink;
+ 		} else {
+-			$record['permalink'] = get_term_link( $item );
++			$permalink = get_term_link( $item );
++			$permalink = str_replace(
++				'http://localhost',
++				'https://mylivesite.com',
++				$permalink
++			);
++			$record['permalink'] = $permalink;
+ 		}
+ 
+ 		$record = (array) apply_filters( 'algolia_term_record', $record, $item );
+diff -ruN templates/autocomplete.php wp-search-with-algolia/templates/autocomplete.php
+--- templates/autocomplete.php	2021-07-24 01:30:16.000000000 +0800
++++ wp-search-with-algolia/templates/autocomplete.php	2022-10-29 20:24:23.000000000 +0800
+@@ -129,6 +129,11 @@
+ 					attributesToSnippet: [
+ 						'content:10'
+ 					],
++					"facetFilters": [
++					  [
++   						"taxonomies.language:<?php echo pll_current_language('name'); ?>"
++					  ]
++					],
+ 					highlightPreTag: '__ais-highlight__',
+ 					highlightPostTag: '__/ais-highlight__'
+ 				} ),
+@@ -176,6 +181,7 @@
+ 
+ 			var config = {
+ 				debug: algolia.debug,
++				detachedMediaQuery: '',
+ 				hint: false,
+ 				openOnFocus: true,
+ 				appendTo: 'body',
+diff -ruN templates/instantsearch.php wp-search-with-algolia/templates/instantsearch.php
+--- templates/instantsearch.php	2021-07-24 01:30:16.000000000 +0800
++++ wp-search-with-algolia/templates/instantsearch.php	2022-10-29 18:15:33.000000000 +0800
+@@ -30,6 +30,10 @@
+ 				<section class="ais-facets" id="facet-post-types"></section>
+ 			</div>
+ 			<div>
++				<h3 class="widgettitle"><?php esc_html_e( 'Languages', 'wp-search-with-algolia' ); ?></h3>
++				<section class="ais-facets" id="facet-languages"></section>
++			</div>
++			<div>
+ 				<h3 class="widgettitle"><?php esc_html_e( 'Categories', 'wp-search-with-algolia' ); ?></h3>
+ 				<section class="ais-facets" id="facet-categories"></section>
+ 			</div>
+@@ -38,7 +42,7 @@
+ 				<section class="ais-facets" id="facet-tags"></section>
+ 			</div>
+ 			<div>
+-				<h3 class="widgettitle"><?php esc_html_e( 'Users', 'wp-search-with-algolia' ); ?></h3>
++				<h3 class="widgettitle"><?php esc_html_e( 'Authors', 'wp-search-with-algolia' ); ?></h3>
+ 				<section class="ais-facets" id="facet-users"></section>
+ 			</div>
+ 		</aside>
+@@ -161,6 +165,14 @@
+ 						sortBy: ['isRefined:desc', 'count:desc', 'name:asc'],
+ 						limit: 10,
+ 					}),
++					
++					/* Languages refinement widget */
++					instantsearch.widgets.menu({
++						container: '#facet-languages',
++						attribute: 'taxonomies.language',
++						sortBy: ['isRefined:desc', 'count:desc', 'name:asc'],
++						limit: 3,
++					}),
+ 
+ 					/* Categories refinement widget */
+ 					instantsearch.widgets.hierarchicalMenu({

@@ -98,9 +98,21 @@ final class Algolia_Terms_Index extends Algolia_Index {
 		$record['slug']        = $item->slug;
 		$record['posts_count'] = (int) $item->count;
 		if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
-			$record['permalink'] = wpcom_vip_get_term_link( $item );
+			$permalink = wpcom_vip_get_term_link( $item );
+			$permalink = str_replace(
+				'http://localhost',
+				'https://mylivesite.com',
+				$permalink
+			);
+			$record['permalink'] = $permalink;
 		} else {
-			$record['permalink'] = get_term_link( $item );
+			$permalink = get_term_link( $item );
+			$permalink = str_replace(
+				'http://localhost',
+				'https://mylivesite.com',
+				$permalink
+			);
+			$record['permalink'] = $permalink;
 		}
 
 		$record = (array) apply_filters( 'algolia_term_record', $record, $item );
