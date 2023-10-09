@@ -222,7 +222,7 @@ final class Algolia_Posts_Index extends Algolia_Index {
 		$permalink = get_permalink( $post );
 		$permalink = str_replace(
 			'http://localhost',
-			'https://craftweeks.com',
+			'https://mylivesite.com',
 			$permalink
 	    );
         $shared_attributes['permalink']      = $permalink;
