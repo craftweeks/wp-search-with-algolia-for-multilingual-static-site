@@ -219,7 +219,13 @@ final class Algolia_Posts_Index extends Algolia_Index {
 
 		$shared_attributes['images'] = Algolia_Utils::get_post_images( $post->ID );
 
-		$shared_attributes['permalink']      = get_permalink( $post );
+		$permalink = get_permalink( $post );
+		$permalink = str_replace(
+			'http://localhost',
+			'https://craftweeks.com',
+			$permalink
+	    );
+        $shared_attributes['permalink']      = $permalink;
 		$shared_attributes['post_mime_type'] = $post->post_mime_type;
 
 		// Push all taxonomies by default, including custom ones.

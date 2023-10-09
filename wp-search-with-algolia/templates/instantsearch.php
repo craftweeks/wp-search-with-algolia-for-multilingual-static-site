@@ -30,6 +30,10 @@ get_header();
 				<section class="ais-facets" id="facet-post-types"></section>
 			</div>
 			<div>
+				<h3 class="widgettitle"><?php esc_html_e( 'Languages', 'wp-search-with-algolia' ); ?></h3>
+				<section class="ais-facets" id="facet-languages"></section>
+			</div>
+			<div>
 				<h3 class="widgettitle"><?php esc_html_e( 'Categories', 'wp-search-with-algolia' ); ?></h3>
 				<section class="ais-facets" id="facet-categories"></section>
 			</div>
@@ -38,7 +42,7 @@ get_header();
 				<section class="ais-facets" id="facet-tags"></section>
 			</div>
 			<div>
-				<h3 class="widgettitle"><?php esc_html_e( 'Users', 'wp-search-with-algolia' ); ?></h3>
+				<h3 class="widgettitle"><?php esc_html_e( 'Authors', 'wp-search-with-algolia' ); ?></h3>
 				<section class="ais-facets" id="facet-users"></section>
 			</div>
 		</aside>
@@ -160,6 +164,14 @@ get_header();
 						attribute: 'post_type_label',
 						sortBy: ['isRefined:desc', 'count:desc', 'name:asc'],
 						limit: 10,
+					}),
+					
+					/* Languages refinement widget */
+					instantsearch.widgets.menu({
+						container: '#facet-languages',
+						attribute: 'taxonomies.language',
+						sortBy: ['isRefined:desc', 'count:desc', 'name:asc'],
+						limit: 3,
 					}),
 
 					/* Categories refinement widget */
