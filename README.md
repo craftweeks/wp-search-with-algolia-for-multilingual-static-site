@@ -1,8 +1,9 @@
-# WP Search with Algolia for Multilingual Site
+# WP Search with Algolia for Multilingual Static Site
 
-This repository contains a modified version of the WordPress plugin **WP Search with Algolia**, which enables Algolia-powered search on WordPress sites.
+This plugin is a fork of the **[WP Search with Algolia](https://wordpress.org/plugins/wp-search-with-algolia/)** WordPress plugin, maintained by **[WebDevStudios](https://github.com/WebDevStudios/wp-search-with-algolia)**. It allows you to use Algolia as your WordPress site's search engine and adds features for multilingual and static WordPress sites.
 
 The main modification is the addition of a multilingual feature, which allows users to index and search content in different languages and to switch between them dynamically based on the user's preference. This feature is useful for sites that have content in multiple languages and want to provide a fast and relevant search experience for their visitors.
+![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/wp-search-with-algolia)  ![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/wp-search-with-algolia)  ![GitHub](https://img.shields.io/github/license/craftweeks/wp-search-with-algolia-for-multilingual-static-site)  ![GitHub release (with filter)](https://img.shields.io/github/v/release/craftweeks/wp-search-with-algolia-for-multilingual-static-site)
 
 ## How To Apply Modifications To The Original Plugin
 
