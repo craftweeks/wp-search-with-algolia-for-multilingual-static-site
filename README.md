@@ -46,3 +46,7 @@ To apply the patch, follow these steps:
    ```
 
 This will update the plugin files with the enhancements. You can now enjoy the improved functionality of the WP Search with Algolia plugin.
+
+## License
+
+This project is licensed under the GNU General Public License version 2 (GPLv2). This means that you can use, modify and distribute this software freely, as long as you adhere to the terms and conditions of the GPLv2. You can find a copy of the GPLv2 in the [`LICENSE`](/LICENSE) file of this repository, or at <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
