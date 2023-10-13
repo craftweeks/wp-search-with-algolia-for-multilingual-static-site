@@ -50,3 +50,7 @@ This will update the plugin files with the enhancements. You can now enjoy the i
 ## License
 
 This project is licensed under the GNU General Public License version 2 (GPLv2). This means that you can use, modify and distribute this software freely, as long as you adhere to the terms and conditions of the GPLv2. You can find a copy of the GPLv2 in the [`LICENSE`](/LICENSE) file of this repository, or at <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>.
+
+## Credits
+
+This project is based on the **[WP Search with Algolia](https://wordpress.org/plugins/wp-search-with-algolia/)** plugin, a WordPress plugin that integrates Algolia's powerful search engine with WordPress sites. The original plugin was created by **[WebDevStudios](https://github.com/WebDevStudios/wp-search-with-algolia "View 'WebDevStudios/wp-search-with-algolia' on GitHub")**, and it is a fork of the **[Search by Algolia – Instant & Relevant results](https://github.com/algolia/algoliasearch-wordpress "View 'algolia/algoliasearch-wordpress' on GitHub")** plugin, which is licensed under the GPLv2. We have made some modifications to the plugin to suit our needs, but we acknowledge and appreciate the work of the original developers.
