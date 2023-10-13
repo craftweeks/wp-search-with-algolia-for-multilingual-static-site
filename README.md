@@ -11,17 +11,30 @@ The main modification is the addition of a multilingual feature, which allows us
 
 - **Fix Algolia Search Issues on Static WordPress**: If you are using a plugin like **[WP2Static](https://wp2static.com/)** or **[Simply Static](https://wordpress.org/plugins/simply-static/)** to convert your WordPress site into a static site, this plugin will make sure that your Algolia search works smoothly on your static site. It will replace `http://localhost` with your deployment site URL in the index files, so you don't have to worry about broken links or incorrect paths.
 
-## How To Apply Modifications To The Original Plugin
+## Installation
 
-### Using Patch Command
+To use this plugin, you need to have an Algolia account and an API key. You can sign up for a free account here: [Algolia Pricing](https://www.algolia.com/pricing/). Once you have your account and API key, you can follow the instructions below to install and configure the plugin on your WordPress site.
 
-You can apply the enhancements to the WP Search with Algolia plugin using the `patch` command. The file `multilingual-site.patch` contains the differences between the original and the modified versions of the files in the `wp-search-with-algolia` directory.
+Here is how you can start using it:
+
+- First, you need to sign up for an Algolia account and get your API keys from **[Algolia](https://www.algolia.com/)**. You can use Algolia for free if your site is small or not for profit. If you have a bigger or commercial site, you can check the [pricing plans](https://www.algolia.com/pricing/) on their website.
+- Next, you need to install the plugin on your WordPress site. You have two options:
+  - You can install the original WP Search with Algolia plugin and then apply our patch file to make it work with multiple languages. You will need a Linux shell to do this.
+  - You can download this repo and copy the folder `wp-search-with-algolia` to your `wp-content/plugins/` WordPress directory.
+- After that, you need to activate the plugin on your WordPress site and follow the steps in the original plugin's documentation. You can read it **[here](https://github.com/WebDevStudios/wp-search-with-algolia/wiki)**.
+- Finally, you need to set up some options in your Algolia dashboard, such as adding a language attribute to your indices and creating facets for it.
+
+That's it! If you have any questions, issues, or feedback, please feel free to open an issue or a pull request on this repository. We appreciate your contribution and support.
+
+### ⛏ How To Apply Modifications To The Original Plugin
+
+You can apply the enhancements to the *original* plugin using the `patch` command, which is a tool that applies changes to files based on a patch file. The patch file `multilingual-site.patch` contains the changes that we made to the original plugin files in the `wp-search-with-algolia` directory.
 
 To apply the patch, follow these steps:
 
 1. Copy the `multilingual-site.patch` file to your `wp-content/plugins/` folder.
 2. Open a terminal and navigate to that folder.
-3. Run the command `patch -p0 < multilingual-site.patch` and follow the instructions on the screen.
+3. Run the command `patch -p0 < multilingual-site.patch` and you should see the output below on the screen.
 
    ```bash
    # Output
@@ -32,4 +45,4 @@ To apply the patch, follow these steps:
    patching file wp-search-with-algolia/templates/instantsearch.php
    ```
 
-In this way, you will update the files in the `wp-search-with-algolia` directory with the modifications.
+This will update the plugin files with the enhancements. You can now enjoy the improved functionality of the WP Search with Algolia plugin.
