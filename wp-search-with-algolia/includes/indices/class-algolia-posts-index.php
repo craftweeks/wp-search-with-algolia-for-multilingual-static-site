@@ -396,7 +396,20 @@ final class Algolia_Posts_Index extends Algolia_Index {
 		// If there are no records, parent `update_records` will take care of the deletion.
 		// In case of posts, we ALWAYS need to delete existing records.
 		if ( ! empty( $records ) ) {
-			$this->delete_item( $post );
+			/**
+			 * Filters whether or not to use synchronous wait on record update operations.
+			 *
+			 * @author WebDevStudios <contact@webdevstudios.com>
+			 * @since 2.6.1
+			 *
+			 * @param bool    $value   Whether or not to use synchronous wait. Default false.
+			 * @param WP_Post $post    Current post object being updated.
+			 * @param array   $records The records
+			 *
+			 * @return bool
+			 */
+			$should_wait = (bool) apply_filters( 'algolia_should_wait_on_delete_item', false, $post, $records );
+			$this->delete_item( $post, $should_wait );
 		}
 
 		parent::update_records( $post, $records );
@@ -475,8 +488,9 @@ final class Algolia_Posts_Index extends Algolia_Index {
 	 * @since  1.0.0
 	 *
 	 * @param mixed $item The item to delete.
+	 * @param bool  $wait Wait for the operation to complete synchronously.
 	 */
-	public function delete_item( $item ) {
+	public function delete_item( $item, $wait = false ) {
 		$this->assert_is_supported( $item );
 
 		$records_count = $this->get_post_records_count( $item->ID );
@@ -485,9 +499,16 @@ final class Algolia_Posts_Index extends Algolia_Index {
 			$object_ids[] = $this->get_post_object_id( $item->ID, $i );
 		}
 
-		if ( ! empty( $object_ids ) ) {
-			$this->get_index()->deleteObjects( $object_ids );
+		if ( empty( $object_ids ) ) {
+			return;
 		}
+
+		if ( $wait ) {
+			$this->get_index()->deleteObjects( $object_ids )->wait();
+			return;
+		}
+
+		$this->get_index()->deleteObjects( $object_ids );
 	}
 
 	/**

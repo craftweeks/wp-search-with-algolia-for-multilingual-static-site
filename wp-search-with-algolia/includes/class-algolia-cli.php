@@ -15,7 +15,7 @@
  *
  * @since 1.0.0
  */
-class Algolia_CLI extends \WP_CLI_Command {
+class Algolia_CLI {
 
 	/**
 	 * The Algolia_Plugin instance.
@@ -118,10 +118,10 @@ class Algolia_CLI extends \WP_CLI_Command {
 	private function do_reindex( Algolia_Index $index, $clear, $from_batch ) {
 
 		if ( $clear ) {
-			/* translators: the placeholder will contain the name of the index. */
+			// translators: the placeholder will contain the name of the index.
 			WP_CLI::log( sprintf( __( 'About to clear index %s...', 'wp-search-with-algolia' ), $index->get_name() ) );
 			$index->clear();
-			/* translators: the placeholder will contain the name of the index. */
+			// translators: the placeholder will contain the name of the index.
 			WP_CLI::success( sprintf( __( 'Correctly cleared index "%s".', 'wp-search-with-algolia' ), $index->get_name() ) );
 		}
 
@@ -147,7 +147,7 @@ class Algolia_CLI extends \WP_CLI_Command {
 			$index->re_index( $page++ );
 			WP_CLI::log( sprintf( 'Indexed batch %s.', ( $page - 1 ) ) );
 			$progress->tick();
-		} while ( $page <= $total_pages );
+		} while ( $page <= ( $total_pages + $from_batch - 1 ) );
 
 		$progress->finish();
 
