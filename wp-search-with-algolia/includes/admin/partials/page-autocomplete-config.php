@@ -10,6 +10,13 @@
 
 ?>
 
+<p class="description" id="home-description">
+	<?php esc_html_e( 'Configure the indices you want to display in the autocomplete search dropdown menu.', 'wp-search-with-algolia' ); ?>
+	<br />
+	<?php esc_html_e( 'Use the `Max. Suggestions` column to configure the number of results displayed by section.', 'wp-search-with-algolia' ); ?>
+	<br />
+	<?php esc_html_e( 'Use drag and drop to control the order of the sections in the autocomplete search dropdown menu.', 'wp-search-with-algolia' ); ?>
+</p>
 <table class="widefat table-autocomplete">
 	<thead>
 		<tr>
@@ -36,7 +43,7 @@
 				<small style="color: #999">
 					<?php
 					printf(
-						/* translators: placeholder is the name of an Algolia search index. */
+						// translators: placeholder is the name of an Algolia search index.
 						esc_html__( 'Index name: %s', 'wp-search-with-algolia' ),
 						esc_html( $index['index_id'] )
 					);
@@ -58,9 +65,9 @@
 	</tbody>
 </table>
 <p class="description" id="home-description">
-	<?php esc_html_e( 'Configure here the indices you want to display in the dropdown menu.', 'wp-search-with-algolia' ); ?>
+	<?php esc_html_e( 'Configure the indices you want to display in the autocomplete search dropdown menu.', 'wp-search-with-algolia' ); ?>
 	<br />
-	<?php esc_html_e( 'Use the `Max. Suggestions` column to configure the number of entries that will be displayed by section.', 'wp-search-with-algolia' ); ?>
+	<?php esc_html_e( 'Use the `Max. Suggestions` column to configure the number of results displayed by section.', 'wp-search-with-algolia' ); ?>
 	<br />
-	<?php esc_html_e( 'Use drag and drop to control the order of the sections in the autocomplete dropdown menu.', 'wp-search-with-algolia' ); ?>
+	<?php esc_html_e( 'Use drag and drop to control the order of the sections in the autocomplete search dropdown menu.', 'wp-search-with-algolia' ); ?>
 </p>

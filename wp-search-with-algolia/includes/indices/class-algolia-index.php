@@ -8,9 +8,9 @@
  * @package WebDevStudios\WPSWA
  */
 
-use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
-use Algolia\AlgoliaSearch\SearchClient;
-use Algolia\AlgoliaSearch\SearchIndex;
+use WebDevStudios\WPSWA\Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
+use WebDevStudios\WPSWA\Algolia\AlgoliaSearch\SearchClient;
+use WebDevStudios\WPSWA\Algolia\AlgoliaSearch\SearchIndex;
 
 /**
  * Class Algolia_Index
@@ -671,7 +671,7 @@ abstract class Algolia_Index {
 	 *
 	 * @return int
 	 */
-	protected function get_re_index_batch_size() {
+	public function get_re_index_batch_size() {
 		$batch_size = (int) apply_filters( 'algolia_indexing_batch_size', 100 );
 		$batch_size = (int) apply_filters( 'algolia_' . $this->get_id() . '_indexing_batch_size', $batch_size );
 
