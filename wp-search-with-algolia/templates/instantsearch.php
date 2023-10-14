@@ -5,7 +5,7 @@
  * @author  WebDevStudios <contact@webdevstudios.com>
  * @since   1.0.0
  *
- * @version 2.0.0
+ * @version 2.5.2
  * @package WebDevStudios\WPSWA
  */
 
@@ -63,6 +63,9 @@ get_header();
 						<# } #>
 					</p>
 				</div>
+				<?php
+				do_action( 'algolia_instantsearch_after_hit' );
+				?>
 			</div>
 			<div class="ais-clearfix"></div>
 		</article>
@@ -117,10 +120,13 @@ get_header();
 						container: '#algolia-stats'
 					}),
 
+					instantsearch.widgets.configure({
+						hitsPerPage: 10,
+					}),
+
 					/* Hits widget */
 					instantsearch.widgets.hits({
 						container: '#algolia-hits',
-						hitsPerPage: 10,
 						templates: {
 							empty: 'No results were found for "<strong>{{query}}</strong>".',
 							item: wp.template('instantsearch-hit')
